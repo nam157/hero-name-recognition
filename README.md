@@ -8,6 +8,7 @@ Problems exist:
 - Using a fairly large architecture (Not recommended)
 - The model is being overfitting
 - Train and evaluate on a single episode. Although sharing data
+
 ## Base environment
 The environment is only available for Python3.8 and upcoming versions of Python3.9
 
@@ -27,19 +28,24 @@ python main --help
 Training the classification:
 
 ```python 
+# @path_dataset: train dataset
 python main.py train --epochs 10 --path_dataset ./test_data/test.txt 
 ```
 
 Export model from ckpt_path to TorchScript format:
 
 ```python
+#@convert_model: Export model to TorchScript format
 python main.py export --convert_model ./save_model/model_hero_jit.pt
 ```
 
 Inference with exported model for making prediction. input_path is a directory which contains many images
 
 ```python
-python main.py infer --torchjit_ck ./save_model/model_hero_jit.pt --folder_img ./test_data/test_images/ --save_file output.txt
+#@torchjit_ck: torchscript model and @folder_img: folder exist images and @save_file: save results
+python main.py infer --torchjit_ck ./save_model/model_hero_jit.pt \ 
+                     --folder_img ./test_data/test_images/ \
+                     --save_file output.txt
 ```
 
 ## Conclusion

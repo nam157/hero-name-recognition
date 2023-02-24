@@ -1,14 +1,15 @@
 import os
 import warnings
 from typing import Any
-import torch
+
 import pandas as pd
+import torch
 import torch.nn as nn
 import torchvision
 from PIL import Image
+from sklearn.metrics import precision_score, recall_score, roc_auc_score
 from torch.utils.data import Dataset
 from torchvision.transforms import transforms as trns
-from sklearn.metrics import precision_score, recall_score, roc_auc_score
 
 warnings.filterwarnings("ignore")  # warning weights=DenseNet121_Weights.IMAGENET1K_V1
 
@@ -89,7 +90,6 @@ class DenseNet121(nn.Module):
         return x
 
 
-
 def train(model, optimizer, criterion, epoch, train_loader):
     model.train()
     running_loss = 0.0
@@ -110,7 +110,7 @@ def train(model, optimizer, criterion, epoch, train_loader):
 def val(model, optimizer, criterion, epoch, test_loader):
     model.eval()
     running_loss = 0.0
-    precision_score_sum,recall_socre_sum = [],[]
+    precision_score_sum, recall_socre_sum = [], []
     with torch.no_grad():
         for i, data in enumerate(test_loader, 0):
             inputs, labels = data
@@ -123,12 +123,12 @@ def val(model, optimizer, criterion, epoch, test_loader):
                 )
                 running_loss = 0.0
             _, predicted = torch.max(outputs, 1)
-            precision = precision_score(labels,predicted,average='micro')
-            recall    = recall_score(labels,predicted,average='micro')
+            precision = precision_score(labels, predicted, average="micro")
+            recall = recall_score(labels, predicted, average="micro")
 
             precision_score_sum.append(precision)
             recall_socre_sum.append(recall)
 
-    return sum(precision_score_sum)/len(precision_score_sum),sum(recall_socre_sum)/len(recall_socre_sum)
-
-
+    return sum(precision_score_sum) / len(precision_score_sum), sum(
+        recall_socre_sum
+    ) / len(recall_socre_sum)
